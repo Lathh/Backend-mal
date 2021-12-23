@@ -3,7 +3,7 @@ const axios = require("axios");
 // Track
 const topTracks = async (req,res)  => {
     try {
-        const response = await axios.get('https://deezer.eddypermana.com/chart/0/tracks');
+        const response = await axios.get('https://api.deezer.com/chart/0/tracks');
         res.status(200).json({
             message: "Top Tracks",
             data: response.data.data
@@ -18,7 +18,7 @@ const topTracks = async (req,res)  => {
 // Genre
 const allGenres = async (req,res)  => {
     try {
-        const response = await axios.get('https://deezer.eddypermana.com/genre');
+        const response = await axios.get('https://api.deezer.com/genre');
         res.status(200).json({
             message: "All Genres",
             data: response.data.data
@@ -33,7 +33,7 @@ const allGenres = async (req,res)  => {
 const genreArtists = async (req,res)  => {
     try {
         const genreId = req.params.genreId;
-        const response = await axios.get(`https://deezer.eddypermana.com/genre/${genreId}/artists`);
+        const response = await axios.get(`https://api.deezer.com/genre/${genreId}/artists`);
         res.status(200).json({
             message: "Genre Artists",
             data: response.data.data
@@ -48,7 +48,7 @@ const genreArtists = async (req,res)  => {
 // Album
 const topAlbums  = async (req, res) => {
     try {
-        const response = await axios.get('https://deezer.eddypermana.com/chart/0/albums')
+        const response = await axios.get('https://api.deezer.com/chart/0/albums')
         //console.log(response.data)
 
         res.status(200).json({
@@ -65,7 +65,7 @@ const topAlbums  = async (req, res) => {
 const albumById  = async (req, res) => {
     try {
         const albumId = req.params.albumId;
-        const response = await axios.get(`https://deezer.eddypermana.com/album/${albumId}`);
+        const response = await axios.get(`https://api.deezer.com/album/${albumId}`);
         res.status(200).json({
             message: "Album by ID",
             data: response.data.data
@@ -80,7 +80,7 @@ const albumById  = async (req, res) => {
 const albumTracks  = async (req, res) => {
     try {
         const albumId = req.params.albumId;
-        const response = await axios.get(`https://deezer.eddypermana.com/album/${albumId}/tracks`);
+        const response = await axios.get(`https://api.deezer.com/album/${albumId}/tracks`);
         res.status(200).json({
             message: "Album Tracks",
             data: response.data.data
@@ -95,7 +95,7 @@ const albumTracks  = async (req, res) => {
 // Artist
 const topArtists = async (req,res)  => {
     try {
-        const response = await axios.get('https://deezer.eddypermana.com/chart/0/artists');
+        const response = await axios.get('https://api.deezer.com/chart/0/artists');
         res.status(200).json({
             message: "Top Artists",
             data: response.data.data
@@ -110,7 +110,7 @@ const topArtists = async (req,res)  => {
 const artistById = async (req,res)  => {
     try {
         const artistId = req.params.artistId;
-        const response = await axios.get(`https://deezer.eddypermana.com/artist/${artistId}`);
+        const response = await axios.get(`https://api.deezer.com/artist/${artistId}`);
         res.status(200).json({
             message: "Artist by ID",
             data: response.data.data
@@ -125,7 +125,7 @@ const artistById = async (req,res)  => {
 const artistTopTracks = async (req,res)  => {
     try {
         const artistId = req.params.artistId;
-        const response = await axios.get(`https://deezer.eddypermana.com/artist/${artistId}/top`);
+        const response = await axios.get(`https://api.deezer.com/artist/${artistId}/top`);
         res.status(200).json({
             message: "Artist Top Tracks",
             data: response.data.data
@@ -140,7 +140,7 @@ const artistTopTracks = async (req,res)  => {
 const artistAlbums = async (req,res)  => {
     try {
         const artistId = req.params.artistId;
-        const response = await axios.get(`https://deezer.eddypermana.com/artist/${artistId}/albums`);
+        const response = await axios.get(`https://api.deezer.com/artist/${artistId}/albums`);
         res.status(200).json({
             message: "Artist Albums",
             data: response.data.data
@@ -155,7 +155,7 @@ const artistAlbums = async (req,res)  => {
 const artistRelated = async (req,res)  => {
     try {
         const artistId = req.params.artistId;
-        const response = await axios.get(`https://deezer.eddypermana.com/artist/${artistId}/related`);
+        const response = await axios.get(`https://api.deezer.com/artist/${artistId}/related`);
         res.status(200).json({
             message: "Artist Related",
             data: response.data.data
@@ -170,7 +170,7 @@ const artistRelated = async (req,res)  => {
 // Playlist
 const allPlaylists = async (req,res)  => {
     try {
-        const response = await axios.get('https://deezer.eddypermana.com/radio');
+        const response = await axios.get('https://api.deezer.com/radio');
         res.status(200).json({
             message: "All Playlists",
             data: response.data.data
@@ -185,7 +185,7 @@ const allPlaylists = async (req,res)  => {
 const playlistById = async (req,res)  => {
     try {
         const playlistId = req.params.playlistId;
-        const response = await axios.get(`https://deezer.eddypermana.com/radio/${playlistId}`);
+        const response = await axios.get(`https://api.deezer.com/radio/${playlistId}`);
         res.status(200).json({
             message: "Playlist by ID",
             data: response.data.data
@@ -200,7 +200,7 @@ const playlistById = async (req,res)  => {
 const playlistTracks = async (req,res)  => {
     try {
         const playlistId = req.params.playlistId;
-        const response = await axios.get(`https://deezer.eddypermana.com/radio/${playlistId}/tracks`);
+        const response = await axios.get(`https://api.deezer.com/radio/${playlistId}/tracks`);
         res.status(200).json({
             message: "Playlist Tracks",
             data: response.data.data
@@ -216,7 +216,7 @@ const playlistTracks = async (req,res)  => {
 const searchTracks = async (req,res)  => {
     try {
         const keyword = req.query.q;
-        const response = await axios.get(`https://deezer.eddypermana.com/search/track?q=${keyword}`);
+        const response = await axios.get(`https://api.deezer.com/search/track?q=${keyword}`);
         res.status(200).json({
             message: "Tracks Search Result",
             data: response.data.data
@@ -231,7 +231,7 @@ const searchTracks = async (req,res)  => {
 const searchAlbums = async (req,res)  => {
     try {
         const keyword = req.query.q;
-        const response = await axios.get(`https://deezer.eddypermana.com/search/album?q=${keyword}`);
+        const response = await axios.get(`https://api.deezer.com/search/album?q=${keyword}`);
         res.status(200).json({
             message: "Albums Search Result",
             data: response.data.data
@@ -246,7 +246,7 @@ const searchAlbums = async (req,res)  => {
 const searchArtists = async (req,res)  => {
     try {
         const keyword = req.query.q;
-        const response = await axios.get(`https://deezer.eddypermana.com/search/artist?q=${keyword}`);
+        const response = await axios.get(`https://api.deezer.com/search/artist?q=${keyword}`);
         res.status(200).json({
             message: "Artists Search Result",
             data: response.data.data
