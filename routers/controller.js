@@ -42,7 +42,7 @@ router.get('/users', userController.allUsers);
 router.get('/users/:userId', userController.userProfile);
 router.post('/users', userController.registerUser);
 router.patch('/users/:userId', userController.editUserProfile);
-router.delete('users/:userId', userController.deleteUser);
+router.delete('/users/:userId', userController.deleteUser);
 router.post('/users/:userId/favorite', userController.addFavoriteTrack);
 router.get('/users/:userId/favorite', userController.favoriteTracks);
 router.delete('/users/:userId/favorite/:trackId', userController.deleteFavoriteTrack);

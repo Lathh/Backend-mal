@@ -68,7 +68,7 @@ const albumById  = async (req, res) => {
         const response = await axios.get(`https://api.deezer.com/album/${albumId}`);
         res.status(200).json({
             message: "Album by ID",
-            data: response.data.data
+            data: response.data
         });
     } catch (error) {
         res.status(404).json({
@@ -113,7 +113,7 @@ const artistById = async (req,res)  => {
         const response = await axios.get(`https://api.deezer.com/artist/${artistId}`);
         res.status(200).json({
             message: "Artist by ID",
-            data: response.data.data
+            data: response.data
         });
     } catch (error) {
         res.status(404).json({
@@ -188,7 +188,7 @@ const playlistById = async (req,res)  => {
         const response = await axios.get(`https://api.deezer.com/radio/${playlistId}`);
         res.status(200).json({
             message: "Playlist by ID",
-            data: response.data.data
+            data: response.data
         });
     } catch (error) {
         res.status(404).json({

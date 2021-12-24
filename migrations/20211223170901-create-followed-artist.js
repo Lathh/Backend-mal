@@ -15,15 +15,6 @@ module.exports = {
       picture: {
         type: Sequelize.STRING
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        foreignKey: true,
-        references: {
-          model: "Users",
-          key: "id"
-        }
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
