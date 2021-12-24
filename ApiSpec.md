@@ -1,374 +1,866 @@
-# API Spec #  
-## Authentication and authorization ##  
+# API Spec
+
+## Authentication and authorization
+
 Use jwt-auth for node js.  
-``` npm install jsonwebtoken```  
+` npm install jsonwebtoken`
 
-Request :  
-- Header : 
-    + token : "secret api"  
+Request :
 
-## Code Response ##  
-|Status code|Describe|
-|:---|:---|
-|1xx|Informational response|
-|2xx|Success|
-|3xx|Redirection|
-|4xx|Client error|
-|5xx|Server error|
-  
-## Endpoint ##  
- 
-|Endpoint|Method|Usage|
-|:--:|:--:|:---|
-|create new acc|POST|```/user```|
-|Get All Acc|GET|```/user```|
-|Delete acc|DELETE|```/user/:userId```|
-|Get top tracks|GET|```/tracks/top```|  
-|Get all genre|GET|```/genres```|
-|Get genre artist|GET|```/genres/:genreId/top```|
-|Get top album|GET|```/albums/top```|
-|Get albums by id|GET|```/albums/:albumId```|
-|Get album tracks|GET|```/albums/:albumId/tracks```|
-|Get top artist|GET|```/artists/top```|
-|Get artist by id|GET|```/artists/:artistId```|
-|Get artist albums|GET|```/artists/:artistId/albums```|
-|Get artist related|GET|```/artists/:artistId/related```|
-|Get all playlist|GET|```/playlist```|
-|Get playlist by id|GET|```/playlist/:playlistId```|
-|Get playlist tracks|GET|```/playlist/:playlistId/tracks```|
-|Search tracks |GET|```/search/tracks```|  
-|Search albums |GET|```/search/albums```|  
-|Search artists |GET|```/search/artists```|  
+- Header :
+  - token : "secret api"
 
-### Create account ###  
-- Body :  
-```
-{
-    "id": "integer, primary key",  
-    "name": "string",  
-    "password": "string"
-}
-```  
-Response :  
-```
-{
-    "message" : "string",
-    "data" : {
-        "id": "integer, primary key",  
-        "name": "string",  
-        "password": "string",
-        "createdAt": "date",
-        "updatedAt": "date"
-    }
-}
-```
-### Get all acc ###  
-Response :  
-```
-{
-    "message" : "string",
-    "data" : {
-        "id": "integer, primary key",  
-        "name": "string",  
-        "password": "string",
-        "createdAt": "date",
-        "updatedAt": "date"
-    }
-}
-```  
-### Delete acc by id ###   
-Response :  
-```
-{
-    "message" : "Account succsess deleted"
-}
-```  
-### Get top track ###  
-Response :  
+## Code Response
+
+| Status code | Describe               |
+| :---------- | :--------------------- |
+| 1xx         | Informational response |
+| 2xx         | Success                |
+| 3xx         | Redirection            |
+| 4xx         | Client error           |
+| 5xx         | Server error           |
+
+## Endpoint
+
+|        Endpoint        | Method | Usage                               |
+| :--------------------: | :----: | :---------------------------------- |
+|     Get Top Tracks     |  GET   | `/tracks/top`                       |
+|     Get All Genres     |  GET   | `/genres`                           |
+|  Get Genre's Artists   |  GET   | `/genres/:genreId/artists`          |
+|     Get Top Albums     |  GET   | `/albums/top`                       |
+|    Get Album by ID     |  GET   | `/albums/:albumId`                  |
+|   Get Album's Tracks   |  GET   | `/albums/:albumId/tracks`           |
+|    Get Top Artists     |  GET   | `/artists/top`                      |
+|    Get Artist by ID    |  GET   | `/artists/:artistId`                |
+|  Get Artist's Albums   |  GET   | `/artists/:artistId/albums`         |
+|  Get Related Artists   |  GET   | `/artists/:artistId/related`        |
+|   Get All Playlists    |  GET   | `/playlists`                        |
+|   Get Playlist by ID   |  GET   | `/playlists/:playlistId`            |
+| Get Playlist's Tracks  |  GET   | `/playlists/:playlistId/tracks`     |
+|     Search Tracks      |  GET   | `/search/tracks`                    |
+|     Search Albums      |  GET   | `/search/albums`                    |
+|     Search Artists     |  GET   | `/search/artists`                   |
+|     Register User      |  POST  | `/users`                            |
+|       Login User       |  POST  | `/users`                            |
+|     Get All Users      |  GET   | `/users`                            |
+|     Get User by ID     |  GET   | `/users/:userId`                    |
+|   Edit User Profile    | PATCH  | `/users/:userId`                    |
+|      Delete User       | DELETE | `/users/:userId`                    |
+|   Add Favorite Track   |  POST  | `/users/:userId/favorite`           |
+|  Get Favorite Tracks   |  GET   | `/users/:userId/favorite`           |
+| Delete Favorite Track  | DELETE | `/users/:userId/favorite/:trackId`  |
+|  Add Followed Artist   |  POST  | `/users/:userId/followed`           |
+|  Get Followed Artists  |  GET   | `/users/:userId/followed`           |
+| Delete Followed Artist | DELETE | `/users/:userId/followed/:artistId` |
+
+### Track
+
+#### Get Top Tracks
+
+Request :
+
+- Method: GET
+- Endpoint: `/tracks/top`
+
+Response :
+
 ```
 {
     "message" : "Top Tracks",
-    "data" : {
-        "id": "integer, primary key",  
+    "data" : [{
+        "id": "integer",
         "title": "string",
-        "title_short": "string",  
-        "link":"",  
-        "duration": "integer",  
-        "rank": "integer",  
-        "explicit_lyrics": "boolean",  
-    }
+        "title_short": "string",
+        "link":"url",
+        "duration": "integer",
+        "rank": "integer",
+        "explicit_lyrics": "boolean","explicit_content_lyrics": "integer",
+        "explicit_content_cover": "integer",
+        "preview": "url",
+        "md5_image": "string",
+        "position": "integer",
+        "artist": "object",
+        "album": "object",
+        "type": "string"
+    }]
 }
-```  
-### Get All Genres ###  
-Response :  
+```
+
+### Genre
+
+#### Get All Genres
+
+Request :
+
+- Method: GET
+- Endpoint: `/genres`
+
+Response :
+
 ```
 {
     "message" : "All Genres",
-    "data" : {
-        "id": "integer, primary key",  
-        "name": "string",   
-        "picture": "https://api.deezer.com/genre/0/image",
-        "picture_small": "https://e-cdns-images.dzcdn.net/images/misc//56x56-000000-80-0-0.jpg",
-        "picture_medium": "https://e-cdns-images.dzcdn.net/images/misc//250x250-000000-80-0-0.jpg",
-        "picture_big": "https://e-cdns-images.dzcdn.net/images/misc//500x500-000000-80-0-0.jpg",
-        "picture_xl": "https://e-cdns-images.dzcdn.net/images/misc//1000x1000-000000-80-0-0.jpg",
-        "type": "genre"
-    }
+    "data" : [{
+        "id": "integer",
+        "name": "string",
+        "picture": "url",
+        "picture_small": "url",
+        "picture_medium": "url",
+        "picture_big": "url",
+        "picture_xl": "url",
+        "type": "string"
+    }]
 }
-```  
-### Get Genres Artists ###  
-Response :  
+```
+
+#### Get Genres Artists
+
+Request :
+
+- Method: GET
+- Endpoint: `/genres/:genreId/artists`
+
+Response :
+
 ```
 {
     "message" : "Genre Artists",
-    "data" : {
-        "id": "integer, primary key",  
-        "name": "string",  
-        "picture": "https://api.deezer.com/artist/6982223/image",
-        "picture_small": "https://e-cdns-images.dzcdn.net/images/artist/f7cbf03e5b0963a68f51c68f20c919cb/56x56-000000-80-0-0.jpg",
-        "picture_medium": "https://e-cdns-images.dzcdn.net/images/artist/f7cbf03e5b0963a68f51c68f20c919cb/250x250-000000-80-0-0.jpg",
-        "picture_big": "https://e-cdns-images.dzcdn.net/images/artist/f7cbf03e5b0963a68f51c68f20c919cb/500x500-000000-80-0-0.jpg",
-        "picture_xl": "https://e-cdns-images.dzcdn.net/images/artist/f7cbf03e5b0963a68f51c68f20c919cb/1000x1000-000000-80-0-0.jpg",
-        "radio": true,
-        "tracklist": "https://api.deezer.com/artist/6982223/top?limit=50",
-        "type": "artist"
-    }
+    "data" : [{
+        "id": "integer",
+        "name": "string",
+        "picture": "url",
+        "picture_small": "url",
+        "picture_medium": "url",
+        "picture_big": "url",
+        "picture_xl": "url",
+        "radio": "boolean",
+        "tracklist": "url",
+        "type": "string"
+    }]
 }
-```  
-### Get top Album ###  
-Response :  
+```
+
+### Album
+
+#### Get Top Albums
+
+Request :
+
+- Method: GET
+- Endpoint: `/albums/top`
+
+Response :
+
 ```
 {
     "message" : "Top Albums",
-    "data" : {
-        "id": "integer, primary key",  
+    "data" : [{
+        "id": "integer",
         "title": "string",
-        "link": "https://www.deezer.com/album/273099082",
-        "cover": "https://api.deezer.com/album/273099082/image",
-        "cover_small": "https://e-cdns-images.dzcdn.net/images/cover/bc52ce5bfeeafc28fb1838d0ec969668/56x56-000000-80-0-0.jpg",
-        "cover_medium": "https://e-cdns-images.dzcdn.net/images/cover/bc52ce5bfeeafc28fb1838d0ec969668/250x250-000000-80-0-0.jpg",
-        "cover_big": "https://e-cdns-images.dzcdn.net/images/cover/bc52ce5bfeeafc28fb1838d0ec969668/500x500-000000-80-0-0.jpg",
-        "cover_xl": "https://e-cdns-images.dzcdn.net/images/cover/bc52ce5bfeeafc28fb1838d0ec969668/1000x1000-000000-80-0-0.jpg",
-        "md5_image": "bc52ce5bfeeafc28fb1838d0ec969668",
-        "type": "album"
-        }
-    
+        "link": "url",
+        "cover": "url",
+        "cover_small": "url",
+        "cover_medium": "url",
+        "cover_big": "url",
+        "cover_xl": "url",
+        "md5_image": "string",
+        "record_type": "string",
+        "tracklist": "url",
+        "explicit_lyrics": "boolean",
+        "position": "integer",
+        "artist": "object",
+        "type": "string"
+        }]
+
 }
-```  
-### Get Album by Id ###  
-Response :  
+```
+
+#### Get Album by ID
+
+Request :
+
+- Method: GET
+- Endpoint: `/albums/:albumId`
+
+Response :
+
 ```
 {
-    "message" : "Album by ID"
+    "message" : "Album by ID",
+    "data" : {
+        "id": "integer",
+        "title": "string",
+        "upc": "string",
+        "link": "url",
+        "share": "url",
+        "cover": "url",
+        "cover_small": "url",
+        "cover_medium": "url",
+        "cover_big": "url",
+        "cover_xl": "url",
+        "md5_image": "string",
+        "genre_id": "integer",
+        "genres": "object",
+        "label": "string",
+        "nb_tracks": "integer",
+        "duration": "integer",
+        "fans": "integer",
+        "release_date": "date",
+        "record_type": "string",
+        "available": "boolean",
+        "tracklist": "url",
+        "explicit_lyrics": "boolean",
+        "explicit_content_lyrics": "integer",
+        "explicit_content_cover": "integer",
+        "contributors": "object",
+        "artist": "object",
+        "type": "string",
+        "tracks": "object"
+    }
 }
-```  
-### Get Album Tracks ###  
-Response :  
+```
+
+#### Get Album's Tracks
+
+Request :
+
+- Method: GET
+- Endpoint: `/albums/:albumId/tracks`
+
+Response :
+
 ```
 {
     "message" : "Album Tracks",
-    "data" : {
-        "id": "integer, primary key",  
+    "data" : [{
+        "id": "integer",
         "readable": "boolean",
         "title": "string",
         "title_short": "string",
         "title_version": "string",
+        "isrc": "string",
+        "link": "url",
         "duration": "integer",
-        "artist": {
-                "id": "integer",
-                "name": "string",
-                "tracklist": "https://api.deezer.com/artist/4606/top?limit=50",
-                "type": "artist"
-            },
-            "type": "track"
-    }
+        "track_position": "integer",
+        "disk_number": "integer",
+        "rank": "integer",
+        "explicit_lyrics": "boolean",
+        "explicit_content_lyrics": "integer",
+        "explicit_content_cover": "integer",
+        "preview": "url",
+        "md5_image": "string,
+        "artist": "object",
+        "type": "string"
+    }]
 }
-```  
-### Get top Artist ###  
-Response :  
+```
+
+### Artist
+
+#### Get Top Artists
+
+Request :
+
+- Method: GET
+- Endpoint: `/artists/top`
+
+Response :
+
 ```
 {
     "message" : "Top Artists",
-    "data" : {
-        "id": "integer, primary key",  
-        "name": "string",  
-        "link": "https://www.deezer.com/artist/6982223",
-        "picture": "https://api.deezer.com/artist/6982223/image",
-        "picture_small": "https://e-cdns-images.dzcdn.net/images/artist/f7cbf03e5b0963a68f51c68f20c919cb/56x56-000000-80-0-0.jpg",
-        "picture_medium": "https://e-cdns-images.dzcdn.net/images/artist/f7cbf03e5b0963a68f51c68f20c919cb/250x250-000000-80-0-0.jpg",
-        "picture_big": "https://e-cdns-images.dzcdn.net/images/artist/f7cbf03e5b0963a68f51c68f20c919cb/500x500-000000-80-0-0.jpg",
-        "picture_xl": "https://e-cdns-images.dzcdn.net/images/artist/f7cbf03e5b0963a68f51c68f20c919cb/1000x1000-000000-80-0-0.jpg",
+    "data" : [{
+        "id": "integer",
+        "name": "string",
+        "link": "url",
+        "picture": "url",
+        "picture_small": "url",
+        "picture_medium": "url",
+        "picture_big": "url",
+        "picture_xl": "url",
         "radio": "boolean",
-        "tracklist": "https://api.deezer.com/artist/6982223/top?limit=50",
-        "position": 1,
-        "type": "artist"
-        }
-    
-}
-```  
-### Get Artist by Id ###  
-Response :  
-```
-{
-    "message" : "Artists by ID"
-}
-```  
-### Get Artist Top Tracks ###  
-Response :  
-```
-{
-    "message" : "Artists Top Tracks",
-    "data" : {
-        "id": "integer, primary key",  
-        "title": "string",
-        "title_short": "string",
-        "title_version": "",
-        "link": "https://www.deezer.com/track/1425844092",
-        "duration": "integer",
-        "rank": 989040,
-        "explicit_lyrics": "boolean",
-        "explicit_content_lyrics": 1,
-        "explicit_content_cover": 2,
-        "preview": "https://cdns-preview-f.dzcdn.net/stream/c-fd9572c7a11401267a6c5c3402254160-3.mp3"
-    }
-}
-```  
-### Get Artist Albums ###  
-Response :  
-```
-{
-    "message" : "Artists Albums",
-    "data" : {
-        "id": "integer, primary key",  
-        "title": "string",
-        "link": "https://www.deezer.com/album/215962322",
-        "cover": "https://api.deezer.com/album/215962322/image",
-        "cover_small": "https://e-cdns-images.dzcdn.net/images/cover/87468622c8e7ac9dce7b541be136aa4c/56x56-000000-80-0-0.jpg",
-        "cover_medium": "https://e-cdns-images.dzcdn.net/images/cover/87468622c8e7ac9dce7b541be136aa4c/250x250-000000-80-0-0.jpg",
-        "cover_big": "https://e-cdns-images.dzcdn.net/images/cover/87468622c8e7ac9dce7b541be136aa4c/500x500-000000-80-0-0.jpg",
-        "cover_xl": "https://e-cdns-images.dzcdn.net/images/cover/87468622c8e7ac9dce7b541be136aa4c/1000x1000-000000-80-0-0.jpg",
-        "md5_image": "87468622c8e7ac9dce7b541be136aa4c",
-        "genre_id": 132,
-        "fans": 50610,
-        "release_date": "date",
-        "record_type": "album",
-        "tracklist": "https://api.deezer.com/album/215962322/tracks",
-        "explicit_lyrics": true,
-        "type": "album"
-    }
-}
-```  
-### Get Artist Related ###  
-Response :  
-```
-{
-    "message" : "Artists Related",
-    "data" : {
-        "id": "integer, primary key",  
-        "name": "string",  
-        "link": "https://www.deezer.com/artist/1547598",
-        "picture": "https://api.deezer.com/artist/1547598/image",
-        "picture_small": "https://e-cdns-images.dzcdn.net/images/artist/ca17f8db374c9725486e24b0b7dc889d/56x56-000000-80-0-0.jpg",
-        "picture_medium": "https://e-cdns-images.dzcdn.net/images/artist/ca17f8db374c9725486e24b0b7dc889d/250x250-000000-80-0-0.jpg",
-        "picture_big": "https://e-cdns-images.dzcdn.net/images/artist/ca17f8db374c9725486e24b0b7dc889d/500x500-000000-80-0-0.jpg",
-        "picture_xl": "https://e-cdns-images.dzcdn.net/images/artist/ca17f8db374c9725486e24b0b7dc889d/1000x1000-000000-80-0-0.jpg",
-        "nb_album": 17,
-        "nb_fan": 165945,
-        "radio": true,
-        "tracklist": "https://api.deezer.com/artist/1547598/top?limit=50",
-        "type": "artist"
+        "tracklist": "url",
+        "position": "integer",
+        "type": "string"
+        }]
 
+}
+```
+
+#### Get Artist by ID
+
+Request :
+
+- Method: GET
+- Endpoint: `/artists/:artistId`
+
+Response :
+
+```
+{
+    "message" : "Artist by ID",
+    "data" : {
+        "id": "integer",
+        "name": "string",
+        "link": "url",
+        "share": "url",
+        "picture": "url",
+        "picture_small": "url",
+        "picture_medium": "url",
+        "picture_big": "url",
+        "picture_xl": "url",
+        "nb_album": "integer",
+        "nb_fan": "integer",
+        "radio": "boolean",
+        "tracklist": "url",
+        "type": "string"
     }
 }
-```  
-### Get All Playlist ###  
-Response :  
+```
+
+#### Get Artist Top Tracks
+
+Request :
+
+- Method: GET
+- Endpoint: `/artists/:artistId/top`
+
+Response :
+
 ```
 {
-    "message" : "All Playlist",
-    "data" : {
-        "id": "integer, primary key",  
-        "title": "string",
-        "picture": "https://api.deezer.com/radio/37151/image",
-        "picture_small": "https://e-cdns-images.dzcdn.net/images/misc/235ec47f2b21c3c73e02fce66f56ccc5/56x56-000000-80-0-0.jpg",
-        "picture_medium": "https://e-cdns-images.dzcdn.net/images/misc/235ec47f2b21c3c73e02fce66f56ccc5/250x250-000000-80-0-0.jpg",
-        "picture_big": "https://e-cdns-images.dzcdn.net/images/misc/235ec47f2b21c3c73e02fce66f56ccc5/500x500-000000-80-0-0.jpg",
-        "picture_xl": "https://e-cdns-images.dzcdn.net/images/misc/235ec47f2b21c3c73e02fce66f56ccc5/1000x1000-000000-80-0-0.jpg",
-        "tracklist": "https://api.deezer.com/radio/37151/tracks",
-        "md5_image": "235ec47f2b21c3c73e02fce66f56ccc5",
-        "type": "radio"
-    }
-}
-```  
-### Get Playlist by Id ###  
-Response :  
-```
-{
-    "message" : "Playlist by Id"
-}
-```  
-### Get Playlist Tracks ###  
-Response :  
-```
-{
-    "message" : "Playlist Tracks",
-    "data" : {
-        "id": "integer, primary key",  
+    "message" : "Artist Top Tracks",
+    "data" : [{
+        "id": "integer",
         "readable": "boolean",
         "title": "string",
         "title_short": "string",
-        "title_version": "",
-        "link": "https://www.deezer.com/track/1351790372",
+        "title_version": "string",
+        "link": "url",
         "duration": "integer",
-        "rank": 419577,
-        "explicit_lyrics": false,
-        "explicit_content_lyrics": 0,
-        "explicit_content_cover": 2,
-        "preview": "https://cdns-preview-3.dzcdn.net/stream/c-39d980d56b1da008b30d67e3529df817-3.mp3",
-        "md5_image": "90adcf9e4208da6fbaf600fff50895f6",
-        "type": "track"
+        "rank": "integer",
+        "explicit_lyrics": "boolean",
+        "explicit_content_lyrics": "integer",
+        "explicit_content_cover": "integer",
+        "preview": "url",
+        "contributors": "object",
+        "md5_image": "string",
+        "artist": "object",
+        "album": "object",
+        "type: "string"
+    }]
+}
+```
+
+#### Get Artist's Albums
+
+Request :
+
+- Method: GET
+- Endpoint: `/artists/:artistId/albums`
+
+Response :
+
+```
+{
+    "message" : "Artist Albums",
+    "data" : [{
+        "id": "integer",
+        "title": "string",
+        "link": "url",
+        "cover": "url",
+        "cover_small": "url",
+        "cover_medium": "url",
+        "cover_big": "url",
+        "cover_xl": "url",
+        "md5_image": "string",
+        "genre_id": "integer",
+        "fans": "integer",
+        "release_date": "date",
+        "record_type": "string",
+        "tracklist": "url",
+        "explicit_lyrics": "boolean",
+        "type": "string"
+    }]
+}
+```
+
+#### Get Related Artists
+
+Request :
+
+- Method: GET
+- Endpoint: `/artists/:artistId/related`
+
+Response :
+
+```
+{
+    "message" : "Artist Related",
+    "data" : [{
+        "id": "integer",
+        "name": "string",
+        "link": "url",
+        "picture": "url",
+        "picture_small": "url",
+        "picture_medium": "url",
+        "picture_big": "url",
+        "picture_xl": "url",
+        "nb_album": "integer",
+        "nb_fan": "integer",
+        "radio": "boolean",
+        "tracklist": "url",
+        "type": "string"
+    }]
+}
+```
+
+### Playlist
+
+#### Get All Playlists
+
+Request :
+
+- Method: GET
+- Endpoint: `/playlists`
+
+Response :
+
+```
+{
+    "message" : "All Playlists",
+    "data" : [{
+        "id": "integer",
+        "title": "string",
+        "picture": "url",
+        "picture_small": "url",
+        "picture_medium": "url",
+        "picture_big": "url",
+        "picture_xl": "url",
+        "tracklist": "url",
+        "md5_image": "string",
+        "type": "string"
+    }]
+}
+```
+
+#### Get Playlist by ID
+
+Request :
+
+- Method: GET
+- Endpoint: `/playlists/:playlistId`
+
+Response :
+
+```
+{
+    "message" : "Playlist by ID",
+    "data": {
+        "id": "integer",
+        "title": "string",
+        "description": "string",
+        "share": "url",
+        "picture": "url",
+        "picture_small": "url",
+        "picture_medium": "url",
+        "picture_big": "url",
+        "picture_xl": "url",
+        "tracklist": "url",
+        "md5_image": "string",
+        "type": "string"
     }
 }
-```  
-### Search Tracks ###  
-Request :  
-- Method : GET  
-- Endpoint : ```/search/track?=${keyword}```  
-Response :  
+```
+
+#### Get Playlist Tracks
+
+Request :
+
+- Method: GET
+- Endpoint: `/playlists/:playlistId/tracks`
+
+Response :
+
+```
+{
+    "message" : "Playlist Tracks",
+    "data" : [{
+        "id": "integer",
+        "readable": "boolean",
+        "title": "string",
+        "title_short": "string",
+        "title_version": "string",
+        "link": "url",
+        "duration": "integer",
+        "rank": "integer",
+        "explicit_lyrics": "boolean",
+        "explicit_content_lyrics": "integer",
+        "explicit_content_cover": "integer",
+        "preview": "url",
+        "md5_image": "string",
+        "artist": "object",
+        "album": "object",
+        "type": "string"
+    }]
+}
+```
+
+### Search
+
+#### Search Tracks
+
+Request :
+
+- Method : GET
+- Endpoint : `/search/tracks?q=${keyword}`
+
+Response :
+
 ```
 {
     "message" : "Tracks Search Result",
-    "data" : {
-        "id": "integer, primary key",  
-        "name": "string"    
-    }
+    "data" : [{
+        "id": "integer",
+        "readable": "boolean",
+        "title": "string",
+        "title_short": "string",
+        "title_version": "string",
+        "link": "url",
+        "duration": "integer",
+        "rank": "integer",
+        "explicit_lyrics": "boolean",
+        "explicit_content_lyrics": "integer",
+        "explicit_content_cover": "integer",
+        "preview": "url",
+        "md5_image": "string",
+        "artist": "object",
+        "album": "object",
+        "type": "string"
+    }]
 }
-```  
-### Search Albums ###  
-Request :  
-- Method : GET  
-- Endpoint : ```/search/album?=${keyword}```  
-Response :  
+```
+
+#### Search Albums
+
+Request :
+
+- Method : GET
+- Endpoint : `/search/albums?q=${keyword}`
+
+Response :
+
 ```
 {
     "message" : "Albums Search Result",
-    "data" : {
-        "id": "integer, primary key",  
-        "name": "string"
-    }
+    "data" : [{
+            "id": "integer",
+            "title": "string",
+            "link": "url",
+            "cover": "url",
+            "cover_small": "url",
+            "cover_medium": "url",
+            "cover_big": "url",
+            "cover_xl": "url",
+            "md5_image": "string",
+            "genre_id": "integer",
+            "nb_tracks": "integer",
+            "record_type": "string",
+            "tracklist": "url",
+            "explicit_lyrics": "boolean",
+            "artist": "object",
+            "type": "string"
+        }]
 }
-```    
-### Search Artists ###  
-Request :  
-- Method : GET  
-- Endpoint : ```/search/artist?=${keyword}```  
-Response :  
+```
+
+#### Search Artists
+
+Request :
+
+- Method : GET
+- Endpoint : `/search/artists?q=${keyword}`
+
+Response :
+
 ```
 {
     "message" : "Artists Search Result",
+    "data" : [{
+        "id": "integer",
+        "name": "string",
+        "link": "url",
+        "picture": "url",
+        "picture_small": "url",
+        "picture_medium": "url",
+        "picture_big": "url",
+        "picture_xl": "url",
+        "nb_album": "integer",
+        "nb_fan": "integer",
+        "radio": "boolean",
+        "tracklist": "url",
+        "type": "string"
+    }]
+}
+```
+
+### User
+
+#### Register User
+
+Request :
+
+- Method : POST
+- Endpoint : `users`
+- Header:
+  - Content-Type: application/json
+- Body :
+
+```
+{
+    "name": "string",
+    "email": "string, unique",
+    "password": "hash(string)",
+    "passwordConfirm": "hash(string)"
+}
+```
+
+Response :
+
+```
+{
+    "message" : "Register New User",
     "data" : {
-        "id": "integer, primary key",  
-        "name": "string"
+        "name": "string",
+        "email": "string",
+        "password": "hash(string)
     }
 }
-```  
+```
+
+#### Login User
+
+#### Get All Users
+
+Request :
+
+- Method : GET
+- Endpoint : `users`
+
+Response :
+
+```
+{
+    "message" : "All Users",
+    "data" : [{
+        "id": "integer",
+        "name": "string",
+        "email": "string",
+        "password": "hash(string)",
+        "createdAt": "date",
+        "updatedAt": "date"
+    }]
+}
+```
+
+#### Get User by ID
+
+Request :
+
+- Method : GET
+- Endpoint : `users/:userId`
+
+Response :
+
+```
+{
+    "message" : "User Profile",
+    "data" : {
+        "id": "integer",
+        "name": "string",
+        "email": "string",
+    }
+}
+```
+
+#### Edit User Profile
+
+Request :
+
+- Method : PATCH
+- Endpoint : `users/:userId`
+- Header:
+  - Content-Type: application/json
+- Body :
+
+```
+{
+    "name": "string",
+    "email": "string"
+}
+```
+
+Response :
+
+```
+{
+    "message" : "Update User Profile",
+    "data" : {
+        "name": "string",
+        "email": "string",
+    }
+}
+```
+
+#### Delete User
+
+Request :
+
+- Method : DELETE
+- Endpoint : `users/:userId`
+
+Response :
+
+```
+{
+    "message" : "Delete User."
+}
+```
+
+#### Add Favorite Tracks
+
+Request :
+
+- Method : POST
+- Endpoint : `users/:userId/favorite`
+- Header:
+  - Content-Type: application/json
+- Body :
+
+```
+{
+    "title": "string",
+    "cover": "url",
+    "artist": "string",
+    "preview": "url"
+}
+```
+
+Response :
+
+```
+{
+    "message": "Add Favorite Track",
+    "data": {
+        "track": {
+            "title": "string",
+            "cover": "url",
+            "artist": "string",
+            "preview": "url",
+            "user_id": "integer"
+        }
+}
+```
+
+#### Get Favorite Tracks
+
+Request :
+
+- Method : GET
+- Endpoint : `users/:userId/favorite`
+
+Response :
+
+```
+{
+    "message": "Favorite Tracks",
+    "data": [{
+            "title": "string",
+            "cover": "url",
+            "artist": "string",
+            "preview": "url",
+            "user_id": "integer"
+        }]
+}
+```
+
+#### Delete Favorite Track
+
+Request :
+
+- Method : DELETE
+- Endpoint : `users/:userId/favorite/:trackId`
+
+Response :
+
+```
+{
+    "message": "Remove Favorite Track."
+}
+```
+
+#### Add Followed Artist
+
+Request :
+
+- Method : POST
+- Endpoint : `users/:userId/followed`
+- Header:
+  - Content-Type: application/json
+- Body :
+
+```
+{
+    "name": "string",
+    "picture": "url"
+}
+```
+
+Response :
+
+```
+{
+    "message": "Add Followed Artist",
+    "data": {
+        "artist": {
+            "name": "string",
+            "picture": "url",
+            "user_id": "integer"
+        }
+}
+```
+
+#### Get Followed Artists
+
+Request :
+
+- Method : GET
+- Endpoint : `users/:userId/followed`
+
+Response :
+
+```
+{
+    "message": "Followed Artist",
+    "data": [{
+            "name": "string",
+            "picture": "url",
+            "user_id": "integer"
+        }]
+}
+```
+
+#### Delete Favorite Track
+
+Request :
+
+- Method : DELETE
+- Endpoint : `users/:userId/followed/:artistId`
+
+Response :
+
+```
+{
+    "message": "Remove Followed Artist."
+}
+```
