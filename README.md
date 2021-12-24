@@ -22,7 +22,7 @@ Backend version of MAL app created with `express js` and documented with `Postma
 - API Specification can be accessed [here](https://github.com/AurelliaChristie/Backend-mal/blob/development/api_specification.md)
 - API Documentation can be accessed [here](https://documenter.getpostman.com/view/12542904/UVRDHm27)
 - Database Design
-![Skilvul - MAL](https://user-images.githubusercontent.com/69672839/147368747-b773e09a-bda2-4002-b0e9-8d0ae69923ce.png)
+![Skilvul - MAL](https://user-images.githubusercontent.com/69672839/147368807-21928776-6b4e-48ba-b25e-575985841b83.png)
 
 ## Developers
 - Aurellia Christie
