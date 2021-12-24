@@ -5,10 +5,7 @@
 Use jwt-auth for node js.  
 ` npm install jsonwebtoken`
 
-Request :
-
-- Header :
-  - token : "secret api"
+Bearer token is needed for some endpoints (check the endpoints specifications).
 
 ## Code Response
 
@@ -22,36 +19,36 @@ Request :
 
 ## Endpoint
 
-|        Endpoint        | Method | Usage                               |
-| :--------------------: | :----: | :---------------------------------- |
-|     Get Top Tracks     |  GET   | `/tracks/top`                       |
-|     Get All Genres     |  GET   | `/genres`                           |
-|  Get Genre's Artists   |  GET   | `/genres/:genreId/artists`          |
-|     Get Top Albums     |  GET   | `/albums/top`                       |
-|    Get Album by ID     |  GET   | `/albums/:albumId`                  |
-|   Get Album's Tracks   |  GET   | `/albums/:albumId/tracks`           |
-|    Get Top Artists     |  GET   | `/artists/top`                      |
-|    Get Artist by ID    |  GET   | `/artists/:artistId`                |
-|  Get Artist's Albums   |  GET   | `/artists/:artistId/albums`         |
-|  Get Related Artists   |  GET   | `/artists/:artistId/related`        |
-|   Get All Playlists    |  GET   | `/playlists`                        |
-|   Get Playlist by ID   |  GET   | `/playlists/:playlistId`            |
-| Get Playlist's Tracks  |  GET   | `/playlists/:playlistId/tracks`     |
-|     Search Tracks      |  GET   | `/search/tracks`                    |
-|     Search Albums      |  GET   | `/search/albums`                    |
-|     Search Artists     |  GET   | `/search/artists`                   |
-|     Register User      |  POST  | `/users`                            |
-|       Login User       |  POST  | `/users`                            |
-|     Get All Users      |  GET   | `/users`                            |
-|     Get User by ID     |  GET   | `/users/:userId`                    |
-|   Edit User Profile    | PATCH  | `/users/:userId`                    |
-|      Delete User       | DELETE | `/users/:userId`                    |
-|   Add Favorite Track   |  POST  | `/users/:userId/favorite`           |
-|  Get Favorite Tracks   |  GET   | `/users/:userId/favorite`           |
-| Delete Favorite Track  | DELETE | `/users/:userId/favorite/:trackId`  |
-|  Add Followed Artist   |  POST  | `/users/:userId/followed`           |
-|  Get Followed Artists  |  GET   | `/users/:userId/followed`           |
-| Delete Followed Artist | DELETE | `/users/:userId/followed/:artistId` |
+|        Endpoint        | Method |                Usage                |    Auth    |
+| :--------------------: | :----: | :---------------------------------: | :--------: |
+|     Get Top Tracks     |  GET   |            `/tracks/top`            |     No     |
+|     Get All Genres     |  GET   |              `/genres`              |     No     |
+|  Get Genre's Artists   |  GET   |     `/genres/:genreId/artists`      |     No     |
+|     Get Top Albums     |  GET   |            `/albums/top`            |     No     |
+|    Get Album by ID     |  GET   |         `/albums/:albumId`          |     No     |
+|   Get Album's Tracks   |  GET   |      `/albums/:albumId/tracks`      |     No     |
+|    Get Top Artists     |  GET   |           `/artists/top`            |     No     |
+|    Get Artist by ID    |  GET   |        `/artists/:artistId`         |     No     |
+|  Get Artist's Albums   |  GET   |     `/artists/:artistId/albums`     |     No     |
+|  Get Related Artists   |  GET   |    `/artists/:artistId/related`     |     No     |
+|   Get All Playlists    |  GET   |            `/playlists`             |     No     |
+|   Get Playlist by ID   |  GET   |      `/playlists/:playlistId`       |     No     |
+| Get Playlist's Tracks  |  GET   |   `/playlists/:playlistId/tracks`   |     No     |
+|     Search Tracks      |  GET   |          `/search/tracks`           |     No     |
+|     Search Albums      |  GET   |          `/search/albums`           |     No     |
+|     Search Artists     |  GET   |          `/search/artists`          |     No     |
+|     Register User      |  POST  |          `/users/register`          |     No     |
+|       Login User       |  POST  |           `/users/login`            |     No     |
+|     Get All Users      |  GET   |              `/users`               | Only Admin |
+|     Get User by ID     |  GET   |          `/users/:userId`           |    Yes     |
+|   Edit User Profile    | PATCH  |          `/users/:userId`           |    Yes     |
+|      Delete User       | DELETE |          `/users/:userId`           |    Yes     |
+|   Add Favorite Track   |  POST  |      `/users/:userId/favorite`      |    Yes     |
+|  Get Favorite Tracks   |  GET   |      `/users/:userId/favorite`      |    Yes     |
+| Delete Favorite Track  | DELETE | `/users/:userId/favorite/:trackId`  |    Yes     |
+|  Add Followed Artist   |  POST  |      `/users/:userId/followed`      |    Yes     |
+|  Get Followed Artists  |  GET   |      `/users/:userId/followed`      |    Yes     |
+| Delete Followed Artist | DELETE | `/users/:userId/followed/:artistId` |    Yes     |
 
 ### Track
 
@@ -611,7 +608,7 @@ Response :
 Request :
 
 - Method : POST
-- Endpoint : `users`
+- Endpoint : `users/register`
 - Header:
   - Content-Type: application/json
 - Body :
@@ -620,8 +617,8 @@ Request :
 {
     "name": "string",
     "email": "string, unique",
-    "password": "hash(string)",
-    "passwordConfirm": "hash(string)"
+    "password": "string",
+    "passwordConfirm": "string"
 }
 ```
 
@@ -632,19 +629,46 @@ Response :
     "message" : "Register New User",
     "data" : {
         "name": "string",
-        "email": "string",
-        "password": "hash(string)
+        "email": "string"
     }
 }
 ```
 
 #### Login User
 
+Request :
+
+- Method : POST
+- Endpoint : `users/login`
+- Header:
+  - Content-Type: application/json
+- Body :
+
+```
+{
+    "email": "string",
+    "password": "string",
+}
+```
+
+Response :
+
+```
+{
+    "message" : "Logged In.",
+    "token" : "string"
+}
+```
+
 #### Get All Users
 
 Request :
 
 - Method : GET
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Admin
 - Endpoint : `users`
 
 Response :
@@ -655,10 +679,7 @@ Response :
     "data" : [{
         "id": "integer",
         "name": "string",
-        "email": "string",
-        "password": "hash(string)",
-        "createdAt": "date",
-        "updatedAt": "date"
+        "email": "string"
     }]
 }
 ```
@@ -668,6 +689,10 @@ Response :
 Request :
 
 - Method : GET
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Specified user ID
 - Endpoint : `users/:userId`
 
 Response :
@@ -688,9 +713,13 @@ Response :
 Request :
 
 - Method : PATCH
-- Endpoint : `users/:userId`
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Specified user ID
 - Header:
   - Content-Type: application/json
+- Endpoint : `users/:userId`
 - Body :
 
 ```
@@ -717,6 +746,10 @@ Response :
 Request :
 
 - Method : DELETE
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Specified user ID & Admin
 - Endpoint : `users/:userId`
 
 Response :
@@ -732,9 +765,13 @@ Response :
 Request :
 
 - Method : POST
-- Endpoint : `users/:userId/favorite`
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Specified user ID
 - Header:
   - Content-Type: application/json
+- Endpoint : `users/:userId/favorite`
 - Body :
 
 ```
@@ -752,13 +789,12 @@ Response :
 {
     "message": "Add Favorite Track",
     "data": {
-        "track": {
-            "title": "string",
-            "cover": "url",
-            "artist": "string",
-            "preview": "url",
-            "user_id": "integer"
-        }
+        "title": "string",
+        "cover": "url",
+        "artist": "string",
+        "preview": "url",
+        "user_id": "integer"
+    }
 }
 ```
 
@@ -767,6 +803,10 @@ Response :
 Request :
 
 - Method : GET
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Specified user ID
 - Endpoint : `users/:userId/favorite`
 
 Response :
@@ -775,6 +815,7 @@ Response :
 {
     "message": "Favorite Tracks",
     "data": [{
+            "id": "integer",
             "title": "string",
             "cover": "url",
             "artist": "string",
@@ -789,6 +830,10 @@ Response :
 Request :
 
 - Method : DELETE
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Specified user ID
 - Endpoint : `users/:userId/favorite/:trackId`
 
 Response :
@@ -804,9 +849,13 @@ Response :
 Request :
 
 - Method : POST
-- Endpoint : `users/:userId/followed`
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Specified user ID
 - Header:
   - Content-Type: application/json
+- Endpoint : `users/:userId/followed`
 - Body :
 
 ```
@@ -822,11 +871,10 @@ Response :
 {
     "message": "Add Followed Artist",
     "data": {
-        "artist": {
-            "name": "string",
-            "picture": "url",
-            "user_id": "integer"
-        }
+        "name": "string",
+        "picture": "url",
+        "user_id": "integer"
+    }
 }
 ```
 
@@ -835,6 +883,10 @@ Response :
 Request :
 
 - Method : GET
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Specified user ID
 - Endpoint : `users/:userId/followed`
 
 Response :
@@ -843,6 +895,7 @@ Response :
 {
     "message": "Followed Artist",
     "data": [{
+            "id": "integer",
             "name": "string",
             "picture": "url",
             "user_id": "integer"
@@ -855,6 +908,10 @@ Response :
 Request :
 
 - Method : DELETE
+- Auth:
+  - Type: Bearer Token
+  - Token: "Your secret API token"
+- Authorized User: Specified user ID
 - Endpoint : `users/:userId/followed/:artistId`
 
 Response :
