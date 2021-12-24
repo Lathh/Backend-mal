@@ -1,15 +1,14 @@
 // Import modules
 const express = require("express");
 const router = require("./routers/controller") ;
+const dotenv = require("dotenv");
+dotenv.config();
 
 // Initiate the app
 const app = express();
 
 // Add Middleware
 app.use(express.json());
-app.use(express.urlencoded({
-    extended: true
-}));
 
 // Add routes
 app.use(router);
