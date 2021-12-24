@@ -68,7 +68,7 @@ const albumById  = async (req, res) => {
         const response = await axios.get(`https://api.deezer.com/album/${albumId}`);
         res.status(200).json({
             message: "Album by ID",
-            data: response.data.data
+            data: response.data
         });
     } catch (error) {
         res.status(404).json({
@@ -113,7 +113,7 @@ const artistById = async (req,res)  => {
         const response = await axios.get(`https://api.deezer.com/artist/${artistId}`);
         res.status(200).json({
             message: "Artist by ID",
-            data: response.data.data
+            data: response.data
         });
     } catch (error) {
         res.status(404).json({
@@ -188,7 +188,7 @@ const playlistById = async (req,res)  => {
         const response = await axios.get(`https://api.deezer.com/radio/${playlistId}`);
         res.status(200).json({
             message: "Playlist by ID",
-            data: response.data.data
+            data: response.data
         });
     } catch (error) {
         res.status(404).json({
@@ -258,57 +258,6 @@ const searchArtists = async (req,res)  => {
     }
 }
 
-// const GetAllUser = async (req,res) => {
-//     try {
-//         const users = await user.findAll()
-//         res.status(200).send(users)
-//     } catch (error) {
-//         res.status(404).json({
-//             message: error.message
-//         })
-//     }
-// }
-
-// const addNewUser = async (req,res) => {
-//     try {
-//         const body = req.body;
-//         const name = body.name;
-//         const email = body.email;
-//         const password = body.password;
-//         const users = new user({name: name, email: email, password: password})
-
-//         const saved = await users.save()
-//         res.status(200).send(saved)
-//     } catch (error) {
-//         res.status(404).json({
-//             message: error.message
-//         })
-//     }
-// }
-
-// const deleteUser = async (req,res) => {
-//     try {
-//         const id = req.params.id 
-//         await user.deleteOne({id: id})
-//         res.status(200).send({message: `user with ${id} has been deleted`})
-//     } catch (error) {
-//         res.status(404).json({
-//             message: error.message
-//         })
-//     }
-// }
-// // const search = async (req,res) => {
-//     try {
-//         const params = req.query
-
-//         const users = await user.find()
-//         res.status(200).send(users)
-//     } catch (error) {
-//         res.status(404).json({
-//             message: error.message
-//         })
-//     }
-// }
 module.exports = {
     topTracks,
 

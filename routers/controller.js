@@ -1,16 +1,12 @@
-const { default: axios } = require("axios");
 const express = require("express");
 const router = express.Router();
 const axiosController = require("../controllers/axios");
-// const userController = require("../routers/user");
+const userController = require("../controllers/user");
 
 router.get('/', (req, res) => {
     res.send("<h1>Welcome to MAL API</h1>");
 })
-// router.get('/users', axiosController.GetAllUser)
-// router.post('/users', axiosController.addNewUser)
-// router.delete('users/{id}', axiosController.deleteUser)
-// router.get('/search/{params}', axiosController.search)
+
 
 // Track
 router.get('/tracks/top', axiosController.topTracks);
@@ -42,6 +38,16 @@ router.get('/search/albums', axiosController.searchAlbums);
 router.get('/search/artists', axiosController.searchArtists);
 
 // User
-// router.get('/users')
+router.get('/users', userController.allUsers);
+router.get('/users/:userId', userController.userProfile);
+router.post('/users', userController.registerUser);
+router.patch('/users/:userId', userController.editUserProfile);
+router.delete('/users/:userId', userController.deleteUser);
+router.post('/users/:userId/favorite', userController.addFavoriteTrack);
+router.get('/users/:userId/favorite', userController.favoriteTracks);
+router.delete('/users/:userId/favorite/:trackId', userController.deleteFavoriteTrack);
+router.post('/users/:userId/followed', userController.addFollowedArtist);
+router.get('/users/:userId/followed', userController.followedArtists);
+router.delete('/users/:userId/followed/:artistId', userController.deleteFollowedArtist);
 
 module.exports = router;
